@@ -4,7 +4,7 @@ from pygame_widgets.button import Button
 
 from settings import *
 from level import Level
-# in order to run this stuff, you need to have installed pygame and pygame-widgets
+
 class StateController:
     def __init__(self):
         self.game_state = "title"
@@ -20,15 +20,15 @@ class StateController:
             y=SCREEN_HEIGHT/2+100,
             width=200,
             height=100,
-            margin=0,  # Minimum distance between text/image and edge of button
+            margin=0, 
             radius=20,
             image=TITLE_SCREEN_START_BUTTON_IMAGE,
-            onClick=lambda: self.start_game() # Function to call when clicked on
+            onClick=lambda: self.start_game()
             )
     
         SCREEN.fill(BG_COLOR)
     
-        SCREEN.blit(TITLE_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100)) #centers the title by positioning the upper left corner at half the width of the SCREEN minus half the width of the image
+        SCREEN.blit(TITLE_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))
         
         pygame_widgets.update(pygame.event.get())
         pygame.display.update()
@@ -45,16 +45,16 @@ class StateController:
             y=SCREEN_HEIGHT/2+100,
             width=200,
             height=100,
-            margin=0,  # Minimum distance between text/image and edge of button
+            margin=0,
             radius=20,
             image=GO_TO_MM_BUTTON_IMAGE,
-            onClick=lambda: self.go_to_title_screen() # Function to call when clicked on
+            onClick=lambda: self.go_to_title_screen()
         )
     
         SCREEN.fill(BG_COLOR)
 
         pygame_widgets.update(pygame.event.get())
-        SCREEN.blit(GAME_OVER_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))    #centers the title by positioning the upper left corner at half the width of the SCREEN minus half the width of the image
+        SCREEN.blit(GAME_OVER_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))    
         pygame.display.update()
         
     def game_won(self):
@@ -69,16 +69,16 @@ class StateController:
             y=SCREEN_HEIGHT/2+100,
             width=200,
             height=100,
-            margin=0,  # Minimum distance between text/image and edge of button
+            margin=0,
             radius=20,
             image=GO_TO_MM_BUTTON_IMAGE,
-            onClick=lambda: self.go_to_title_screen() # Function to call when clicked on
+            onClick=lambda: self.go_to_title_screen()
         )
     
         SCREEN.fill(BG_COLOR)
     
         pygame_widgets.update(pygame.event.get())   
-        SCREEN.blit(GAME_WON_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))    #centers the title by positioning the upper left corner at half the width of the SCREEN minus half the width of the image
+        SCREEN.blit(GAME_WON_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))    
         pygame.display.update()
     
     def level(self):
