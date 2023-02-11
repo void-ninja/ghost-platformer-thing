@@ -1,24 +1,36 @@
 import pygame,sys
+import pygame_widgets
+from pygame_widgets.button import Button
+
 from settings import *
 from level import Level
-#test
+# in order to run this stuff, you need to have installed pygame and pygame-widgets
 class StateController:
     def __init__(self):
         self.game_state = "title"
             
-    def title(self): #? maybe change this to only build the level once the level is started
+    def title(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_SPACE:
-                    self.game_state = "level"
-        
+        startButton = Button(
+            win=SCREEN,
+            x=SCREEN_WIDTH/2-100,
+            y=SCREEN_HEIGHT/2+100,
+            width=200,
+            height=100,
+            margin=0,  # Minimum distance between text/image and edge of button
+            radius=20,
+            image=TITLE_SCREEN_START_BUTTON_IMAGE,
+            onClick=lambda: self.start_game() # Function to call when clicked on
+            )
     
         SCREEN.fill(BG_COLOR)
     
-        SCREEN.blit(TITLE_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))    #centers the title by positioning the upper left corner at half the width of the SCREEN minus half the width of the image
+        SCREEN.blit(TITLE_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100)) #centers the title by positioning the upper left corner at half the width of the SCREEN minus half the width of the image
+        
+        pygame_widgets.update(pygame.event.get())
         pygame.display.update()
     
     def game_over(self):        
@@ -26,12 +38,22 @@ class StateController:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_SPACE:
-                    self.go_to_title_screen()    
+  
+        titleScreenButton = Button(
+            win=SCREEN,
+            x=SCREEN_WIDTH/2-100,
+            y=SCREEN_HEIGHT/2+100,
+            width=200,
+            height=100,
+            margin=0,  # Minimum distance between text/image and edge of button
+            radius=20,
+            image=GO_TO_MM_BUTTON_IMAGE,
+            onClick=lambda: self.go_to_title_screen() # Function to call when clicked on
+        )
     
         SCREEN.fill(BG_COLOR)
-    
+
+        pygame_widgets.update(pygame.event.get())
         SCREEN.blit(GAME_OVER_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))    #centers the title by positioning the upper left corner at half the width of the SCREEN minus half the width of the image
         pygame.display.update()
         
@@ -40,12 +62,22 @@ class StateController:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_SPACE:
-                    self.go_to_title_screen() 
+                
+        titleScreenButton = Button(
+            win=SCREEN,
+            x=SCREEN_WIDTH/2-100,
+            y=SCREEN_HEIGHT/2+100,
+            width=200,
+            height=100,
+            margin=0,  # Minimum distance between text/image and edge of button
+            radius=20,
+            image=GO_TO_MM_BUTTON_IMAGE,
+            onClick=lambda: self.go_to_title_screen() # Function to call when clicked on
+        )
     
         SCREEN.fill(BG_COLOR)
     
+        pygame_widgets.update(pygame.event.get())   
         SCREEN.blit(GAME_WON_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))    #centers the title by positioning the upper left corner at half the width of the SCREEN minus half the width of the image
         pygame.display.update()
     
@@ -87,13 +119,17 @@ class StateController:
         self.game_state = "gamewon"
     
     def go_to_title_screen(self):
-        level.level_reset_and_load_first()#this sets the currently active level to the first one
+        level.level_clear()
         self.game_state = "title"
     
     def go_to_next_level(self):
         nextLevel = level.return_next_level()
         if nextLevel > MAX_LEVEL_NUM: self.go_to_game_won() #checks to make sure that you arent trying to go to a level that dosent exist
         else: level.level_reset_and_load_next(nextLevel)
+    
+    def start_game(self):
+        level.level_reset_and_load_first()#this sets the currently active level to the first one
+        self.game_state = "level"
 
 pygame.init()
 clock = pygame.time.Clock()

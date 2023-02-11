@@ -1,4 +1,6 @@
 import pygame
+import pygame_widgets
+from pygame_widgets.button import Button
 
 pygame.init()
 
@@ -57,3 +59,6 @@ CAMERA_BORDERS = {
     "right": 400,
     "top": 100,
     "bottom": 150}
+
+TITLE_SCREEN_START_BUTTON_IMAGE = pygame.transform.scale(pygame.image.load("art/start_button_placeholder.png"),(200,100))
+GO_TO_MM_BUTTON_IMAGE = pygame.transform.scale(pygame.image.load("art/main_menu_button_placeholder.png"),(200,100))
