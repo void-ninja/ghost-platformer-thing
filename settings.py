@@ -47,10 +47,15 @@ FLAG_COLOR = "yellow"
 
 FLAG_HIT = pygame.event.custom_type()
 FELL_DOWN = pygame.event.custom_type()
+CHANGE_STATE = pygame.event.custom_type()
 
 TITLE_IMAGE = pygame.transform.scale2x(pygame.image.load("art/title_placeholder.png").convert_alpha())
 GAME_OVER_IMAGE = pygame.transform.scale2x(pygame.image.load("art/game_over_placeholder.png").convert_alpha())
 GAME_WON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/game_won_placeholder.png").convert_alpha())
+LEVEL_SELECT_IMAGE = pygame.transform.scale2x(pygame.image.load("art/level_select_placeholder.png").convert_alpha())
+
+TITLE_SCREEN_START_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/start_button_placeholder.png"))
+GO_TO_TITLE_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/main_menu_button_placeholder.png"))
 
 FPS = 60
 
@@ -59,6 +64,3 @@ CAMERA_BORDERS = {
     "right": 400,
     "top": 100,
     "bottom": 150}
-
-TITLE_SCREEN_START_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/start_button_placeholder.png"))
-GO_TO_MM_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/main_menu_button_placeholder.png"))

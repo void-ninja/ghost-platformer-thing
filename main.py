@@ -1,86 +1,30 @@
 import pygame,sys
 import pygame_widgets
 from pygame_widgets.button import Button
+from pygame_widgets.button import ButtonArray
 
 from settings import *
 from level import Level
+from screen_handler import ScreenHandler
+
+#? widgets arent clearing  maybe
+#! fix the screen images not showing e.g. on gameover screen
 
 class StateController:
     def __init__(self):
         self.game_state = "title"
-            
-    def title(self):
+    
+    def screen_loop(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        startButton = Button(
-            win=SCREEN,
-            x=SCREEN_WIDTH/2-100,
-            y=SCREEN_HEIGHT/2+100,
-            width=200,
-            height=100,
-            margin=0, 
-            radius=20,
-            image=TITLE_SCREEN_START_BUTTON_IMAGE,
-            onClick=lambda: self.start_game()
-            )
-    
-        SCREEN.fill(BG_COLOR)
-    
-        SCREEN.blit(TITLE_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))
-        
-        pygame_widgets.update(pygame.event.get())
-        pygame.display.update()
-    
-    def game_over(self):        
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-  
-        titleScreenButton = Button(
-            win=SCREEN,
-            x=SCREEN_WIDTH/2-100,
-            y=SCREEN_HEIGHT/2+100,
-            width=200,
-            height=100,
-            margin=0,
-            radius=20,
-            image=GO_TO_MM_BUTTON_IMAGE,
-            onClick=lambda: self.go_to_title_screen()
-        )
-    
-        SCREEN.fill(BG_COLOR)
+            if event.type == CHANGE_STATE:
+                self.change_state(event.__dict__["state"])
 
         pygame_widgets.update(pygame.event.get())
-        SCREEN.blit(GAME_OVER_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))    
         pygame.display.update()
         
-    def game_won(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-                
-        titleScreenButton = Button(
-            win=SCREEN,
-            x=SCREEN_WIDTH/2-100,
-            y=SCREEN_HEIGHT/2+100,
-            width=200,
-            height=100,
-            margin=0,
-            radius=20,
-            image=GO_TO_MM_BUTTON_IMAGE,
-            onClick=lambda: self.go_to_title_screen()
-        )
-    
-        SCREEN.fill(BG_COLOR)
-    
-        pygame_widgets.update(pygame.event.get())   
-        SCREEN.blit(GAME_WON_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))    
-        pygame.display.update()
-    
     def level(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -101,26 +45,42 @@ class StateController:
         pygame.display.update()
         
     def state_manager(self):
-        if self.game_state == "title":
-            self.title()
         if self.game_state == "level":
             self.level()
-        if self.game_state == "gameover":
-            self.game_over()
-        if self.game_state == "gamewon":
-            self.game_won()
+        else:
+            self.screen_loop()
+            
+    def change_state(self, state):
+        if state == "startgame":
+            self.start_game()
+        if state == "title":
+            self.go_to_title_screen()
+        if state == "gameover":
+            self.go_to_game_over()
+        if state == "gamewon":
+            self.go_to_game_won()
+        if state == "levelselect":
+            self.go_to_level_select()
         
     def go_to_game_over(self):
         level.level_clear()
+        screenHandler.setup_screen("gameover")
         self.game_state = "gameover"
     
     def go_to_game_won(self):
         level.level_clear()
+        screenHandler.setup_screen("gamewon")
         self.game_state = "gamewon"
     
     def go_to_title_screen(self):
         level.level_clear()
+        screenHandler.setup_screen("title")
         self.game_state = "title"
+        
+    def go_to_level_select(self):
+        level.level_clear()
+        screenHandler.setup_screen("levelselect")
+        self.game_state = "levelselect"
     
     def go_to_next_level(self):
         nextLevel = level.return_next_level()
@@ -135,8 +95,10 @@ pygame.init()
 clock = pygame.time.Clock()
 level = Level()
 gameState = StateController()
+screenHandler = ScreenHandler()
+
+gameState.go_to_title_screen()
 
 while True:
     gameState.state_manager()
     clock.tick(FPS)
-    
