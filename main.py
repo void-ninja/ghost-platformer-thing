@@ -1,18 +1,17 @@
 import pygame,sys
 import pygame_widgets
-from pygame_widgets.button import Button
-from pygame_widgets.button import ButtonArray
 
 from settings import *
 from level import Level
 from screen_handler import ScreenHandler
 
 #? widgets arent clearing  maybe
+#^ level select buttons dont clear
 #! fix the screen images not showing e.g. on gameover screen
 
 class StateController:
     def __init__(self):
-        self.game_state = "title"
+        pass
     
     def screen_loop(self):
         for event in pygame.event.get():
@@ -40,7 +39,7 @@ class StateController:
                     self.go_to_title_screen() 
                 
     
-        SCREEN.fill(BG_COLOR)
+        SCREEN.blit(BG,(0,0))
         level.run()  #updates and draws stuff
         pygame.display.update()
         
@@ -51,6 +50,8 @@ class StateController:
             self.screen_loop()
             
     def change_state(self, state):
+        
+        
         if state == "startgame":
             self.start_game()
         if state == "title":

@@ -40,7 +40,8 @@ SCREEN_HEIGHT = 768
 
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
 
-BG_COLOR = "slategrey"
+BG = pygame.transform.scale(pygame.image.load("art/bg1.png").convert_alpha(),(SCREEN_WIDTH,SCREEN_HEIGHT))
+
 PLAYER_COLOR = "green"
 TILE_COLOR = "blue"
 FLAG_COLOR = "yellow"
@@ -54,8 +55,8 @@ GAME_OVER_IMAGE = pygame.transform.scale2x(pygame.image.load("art/game_over_plac
 GAME_WON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/game_won_placeholder.png").convert_alpha())
 LEVEL_SELECT_IMAGE = pygame.transform.scale2x(pygame.image.load("art/level_select_placeholder.png").convert_alpha())
 
-TITLE_SCREEN_START_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/start_button_placeholder.png"))
-GO_TO_TITLE_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/main_menu_button_placeholder.png"))
+TITLE_SCREEN_START_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/start_button_placeholder.png").convert_alpha())
+GO_TO_TITLE_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/main_menu_button_placeholder.png").convert_alpha())
 
 FPS = 60
 

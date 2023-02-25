@@ -10,7 +10,7 @@ class ScreenHandler: #this handles displaying every screen other than the level
     #screen setups
     def setup_screen(self, screen): # screen needs to be a text input, "title","gameover","gamewon","levelselect" are all valid options
         if screen == "title":
-            SCREEN.fill(BG_COLOR)
+            SCREEN.blit(BG,(0,0))
             SCREEN.blit(TITLE_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))
             
             self.startButton = Button(
@@ -26,7 +26,7 @@ class ScreenHandler: #this handles displaying every screen other than the level
             )
             
         elif screen == "gameover":
-            SCREEN.fill(BG_COLOR)
+            SCREEN.blit(BG,(0,0))
             SCREEN.blit(GAME_OVER_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))    
            
             self.titleScreenButton = Button(
@@ -42,7 +42,7 @@ class ScreenHandler: #this handles displaying every screen other than the level
             )
             
         elif screen == "gamewon":
-            SCREEN.fill(BG_COLOR)
+            SCREEN.blit(BG,(0,0))
             SCREEN.blit(GAME_WON_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))    
             
             self.titleScreenButton = Button(
@@ -58,7 +58,7 @@ class ScreenHandler: #this handles displaying every screen other than the level
             )
             
         elif screen == "levelselect":
-            SCREEN.fill(BG_COLOR)
+            SCREEN.blit(BG,(0,0))
             SCREEN.blit(LEVEL_SELECT_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-300))    
             
             self.titleScreenButton = Button(     
@@ -80,7 +80,7 @@ class ScreenHandler: #this handles displaying every screen other than the level
                 400,
                 200,
                 (3,2),
-                colour=BG_COLOR,
+                colour="white",
                 texts=("1","2","3","4","5","6"),
                 onClicks=(lambda: print('1'), lambda: print('2'), lambda: print('3'), lambda: print('4'), lambda: print('5'), lambda: print('6'))
             )
