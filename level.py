@@ -5,6 +5,7 @@ from settings import *
 from tile import Tile
 from flag import Flag
 from player import Player
+from ghost import Ghost
 from debug import debug
 
 class Level:
@@ -65,13 +66,13 @@ class Level:
             pos = (obj.x*4,obj.y*4) # x4 needed bc of scaling the tiles from 16 px to 64px
             if obj.name == "Player":
                 self.player= Player(pos,[self.visibleSprites,self.activeSprites],self.collisionSprites,self.visibleSprites,levelMap)
+                Ghost(pos,[self.visibleSprites,self.activeSprites])
             elif obj.name == "Flag":
                 Flag(pos,obj.image,[self.visibleSprites])
              
     def run(self):
         self.activeSprites.update()
         self.visibleSprites.custom_draw(self.player)
-        debug(self.player.rect.y)
         
 class CameraGroup(pygame.sprite.Group):
         def __init__(self):

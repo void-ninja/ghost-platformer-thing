@@ -5,13 +5,14 @@ from settings import *
 from level import Level
 from screen_handler import ScreenHandler
 
+from debug import debug
+
 #? widgets arent clearing  maybe
 #^ level select buttons dont clear
 #! fix the screen images not showing e.g. on gameover screen
 
 #TODO----------------
-#Tiled stuff not working
-#Player and flag get spawned way up in the air, the map is super low
+#player death on reaching the bottom of the level
 
 class StateController:
     def __init__(self):
@@ -45,6 +46,7 @@ class StateController:
     
         SCREEN.blit(BG,(0,0))
         level.run()  #updates and draws stuff
+        debug(clock.get_fps())
         pygame.display.update()
         
     def state_manager(self):
