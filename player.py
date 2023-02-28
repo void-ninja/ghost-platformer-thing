@@ -17,9 +17,6 @@ class Player(pygame.sprite.Sprite):
         self.onFloor = False
         
         
-        for row,i in enumerate(levelMap): 
-            self.levelBottom = (row * TILE_SIZE) + TILE_SIZE
-        
     def input(self):
         keys = pygame.key.get_pressed()
         
@@ -34,8 +31,8 @@ class Player(pygame.sprite.Sprite):
             self.direction.y = -self.jumpHeight
             
     def check_collisions(self):
-        if self.rect.y > self.levelBottom: #checks if you have fallen past the level
-            pygame.event.post(pygame.event.Event(FELL_DOWN))
+        # if self.rect.y > self.levelBottom: #checks if you have fallen past the level
+        #     pygame.event.post(pygame.event.Event(FELL_DOWN))
         
         #checks for level end (hit the flag)  
         for sprite in self.visibleSprites.sprites():

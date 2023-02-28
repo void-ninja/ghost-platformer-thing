@@ -1,8 +1,11 @@
 import pygame
+from pytmx.util_pygame import load_pygame
+
 from settings import *
 from tile import Tile
 from flag import Flag
 from player import Player
+from debug import debug
 
 class Level:
     
@@ -14,8 +17,7 @@ class Level:
         self.collisionSprites = pygame.sprite.Group() #sprites the player can collide with
         
         self.currentLevel = 1
-        
-        self.levelSetup(self.currentLevel)
+
         
     def return_next_level(self):
         self.currentLevel += 1
@@ -28,31 +30,48 @@ class Level:
         
     def level_reset_and_load_next(self,levelNum):
         self.level_clear()
-        self.levelSetup(levelNum)
+        self.level_setup(levelNum)
     
     def level_reset_and_load_first(self):
         self.level_clear()
         self.currentLevel = 1
         
-        self.levelSetup(self.currentLevel)
+        self.level_setup(self.currentLevel)
     
-    def levelSetup(self, levelNum):
+    # def levelSetup(self, levelNum):
+    #     levelMap = LEVEL_MAPS[levelNum-1]
+        
+    #     for rowIndex,row in enumerate(levelMap):
+    #         for colIndex,col in enumerate(row):
+    #             x = colIndex * TILE_SIZE
+    #             y = rowIndex * TILE_SIZE
+    #             if col == "X":
+    #                 Tile((x,y),[self.visibleSprites,self.collisionSprites])
+    #             if col == "P":
+    #                 self.player = Player((x,y),[self.visibleSprites,self.activeSprites],self.collisionSprites,self.visibleSprites,levelMap)
+    #             if col == "F":
+    #                 Flag((x,y),[self.visibleSprites])
+    
+    def level_setup(self,levelNum):
         levelMap = LEVEL_MAPS[levelNum-1]
         
-        for rowIndex,row in enumerate(levelMap):
-            for colIndex,col in enumerate(row):
-                x = colIndex * TILE_SIZE
-                y = rowIndex * TILE_SIZE
-                if col == "X":
-                    Tile((x,y),[self.visibleSprites,self.collisionSprites])
-                if col == "P":
-                    self.player = Player((x,y),[self.visibleSprites,self.activeSprites],self.collisionSprites,self.visibleSprites,levelMap)
-                if col == "F":
-                    Flag((x,y),[self.visibleSprites])
-        
+        for layer in levelMap.visible_layers:
+            if hasattr(layer,"data"):
+                for x,y,image in layer.tiles():
+                    pos = (x*TILE_SIZE,y*TILE_SIZE)
+                    Tile(pos=pos, image=image, groups=[self.visibleSprites,self.collisionSprites])
+                    
+        for obj in levelMap.objects:
+            pos = (obj.x*4,obj.y*4) # x4 needed bc of scaling the tiles from 16 px to 64px
+            if obj.name == "Player":
+                self.player= Player(pos,[self.visibleSprites,self.activeSprites],self.collisionSprites,self.visibleSprites,levelMap)
+            elif obj.name == "Flag":
+                Flag(pos,obj.image,[self.visibleSprites])
+             
     def run(self):
         self.activeSprites.update()
         self.visibleSprites.custom_draw(self.player)
+        debug(self.player.rect.y)
         
 class CameraGroup(pygame.sprite.Group):
         def __init__(self):

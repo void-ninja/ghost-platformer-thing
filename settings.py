@@ -1,44 +1,49 @@
 import pygame
 import pygame_widgets
 from pygame_widgets.button import Button
+from pytmx.util_pygame import load_pygame
 
 pygame.init()
 
-LEVEL_MAPS = [[
-    "                  X  F  X   ",
-    "                   XXXXX    ",
-    "                      X  X  ",
-    " P                    X     ",
-    "XXXX                   X    ",
-    "XXX       F            XX   ",
-    "        XXXXXXXXXXXX        ",
-    "       XX          XX      X",
-    "   X XXXX            X     X",
-    "  XX    X             XXXXXX",
-    " XXX    X                   ",
-    "XXXX XXXX                   ",
-],[
-    "             XXXXXX  F                   XXXXXX  F      ",
-    "                   XXXX                        XXXX     ",
-    "                      X  X                        X  X  ",
-    " P                    X                           X     ",
-    "                       X                           X    ",
-    "          F            XX                          XX   ",
-    "XXXX  XXXXXXXXXXXXXX        XXXXXXXXXXXXXXXXXXXX        ",
-    "       XX          XX      X                   XX      X",
-    "   X  XXX            X     X                     X     X",
-    "  XX    X             X  XXX                      XXXXXX",
-    " XXX    X                                               ",
-    "                                                        ",
-]]
-
-MAX_LEVEL_NUM = len(LEVEL_MAPS)
-
-TILE_SIZE = 64 #16x12 tile screen
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
 
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+
+#deprecated -------------------------
+# LEVEL_MAPS = [[
+#     "                  X  F  X   ",
+#     "                   XXXXX    ",
+#     "                      X  X  ",
+#     " P                    X     ",
+#     "XXXX                   X    ",
+#     "XXX       F            XX   ",
+#     "        XXXXXXXXXXXX        ",
+#     "       XX          XX      X",
+#     "   X XXXX            X     X",
+#     "  XX    X             XXXXXX",
+#     " XXX    X                   ",
+#     "XXXX XXXX                   ",
+# ],[
+#     "             XXXXXX  F                   XXXXXX  F      ",
+#     "                   XXXX                        XXXX     ",
+#     "                      X  X                        X  X  ",
+#     " P                    X                           X     ",
+#     "                       X                           X    ",
+#     "          F            XX                          XX   ",
+#     "XXXX  XXXXXXXXXXXXXX        XXXXXXXXXXXXXXXXXXXX        ",
+#     "       XX          XX      X                   XX      X",
+#     "   X  XXX            X     X                     X     X",
+#     "  XX    X             X  XXX                      XXXXXX",
+#     " XXX    X                                               ",
+#     "                                                        ",
+# ]]
+#---------------------------------------
+LEVEL_MAPS = [load_pygame("art/tmx/level1.tmx")] #new levels go in here
+
+MAX_LEVEL_NUM = len(LEVEL_MAPS)
+
+TILE_SIZE = 64 #16x12 tile screen
 
 BG = pygame.transform.scale(pygame.image.load("art/bg1.png").convert_alpha(),(SCREEN_WIDTH,SCREEN_HEIGHT))
 

@@ -9,6 +9,10 @@ from screen_handler import ScreenHandler
 #^ level select buttons dont clear
 #! fix the screen images not showing e.g. on gameover screen
 
+#TODO----------------
+#Tiled stuff not working
+#Player and flag get spawned way up in the air, the map is super low
+
 class StateController:
     def __init__(self):
         pass
