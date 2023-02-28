@@ -45,7 +45,7 @@ MAX_LEVEL_NUM = len(LEVEL_MAPS)
 
 TILE_SIZE = 64 #16x12 tile screen
 
-LEVEL_HEIGHT = 32*TILE_SIZE #how many tiles high the level maps can
+LEVEL_HEIGHT = 32*TILE_SIZE #how many tiles high the level maps can be, this is so that the player can die if they fall too far
 
 BG = pygame.transform.scale(pygame.image.load("art/bg1.png").convert_alpha(),(SCREEN_WIDTH,SCREEN_HEIGHT))
 

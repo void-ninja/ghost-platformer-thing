@@ -2,7 +2,7 @@ import pygame
 from settings import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,groups,collisionSprites,visibleSprites,levelMap):
+    def __init__(self,pos,groups,collisionSprites,visibleSprites):
         super().__init__(groups)
         self.image = pygame.Surface((TILE_SIZE // 2, TILE_SIZE))
         self.image.fill(PLAYER_COLOR)
@@ -31,8 +31,8 @@ class Player(pygame.sprite.Sprite):
             self.direction.y = -self.jumpHeight
             
     def check_collisions(self):
-        # if self.rect.y > self.levelBottom: #checks if you have fallen past the level
-        #     pygame.event.post(pygame.event.Event(FELL_DOWN))
+        if self.rect.y > LEVEL_HEIGHT: #checks if you have fallen past the level
+            pygame.event.post(pygame.event.Event(FELL_DOWN))
         
         #checks for level end (hit the flag)  
         for sprite in self.visibleSprites.sprites():

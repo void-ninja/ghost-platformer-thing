@@ -11,8 +11,10 @@ from debug import debug
 #^ level select buttons dont clear
 #! fix the screen images not showing e.g. on gameover screen
 
+#player camera wont reset from being pushed down after falling through a level
+
 #TODO----------------
-#player death on reaching the bottom of the level
+#
 
 class StateController:
     def __init__(self):
@@ -46,7 +48,7 @@ class StateController:
     
         SCREEN.blit(BG,(0,0))
         level.run()  #updates and draws stuff
-        debug(clock.get_fps())
+        debug(round(clock.get_fps()))
         pygame.display.update()
         
     def state_manager(self):

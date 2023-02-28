@@ -19,7 +19,6 @@ class Level:
         
         self.currentLevel = 1
 
-        
     def return_next_level(self):
         self.currentLevel += 1
         return self.currentLevel
@@ -65,7 +64,7 @@ class Level:
         for obj in levelMap.objects:
             pos = (obj.x*4,obj.y*4) # x4 needed bc of scaling the tiles from 16 px to 64px
             if obj.name == "Player":
-                self.player= Player(pos,[self.visibleSprites,self.activeSprites],self.collisionSprites,self.visibleSprites,levelMap)
+                self.player= Player(pos,[self.visibleSprites,self.activeSprites],self.collisionSprites,self.visibleSprites)
                 Ghost(pos,[self.visibleSprites,self.activeSprites])
             elif obj.name == "Flag":
                 Flag(pos,obj.image,[self.visibleSprites])
