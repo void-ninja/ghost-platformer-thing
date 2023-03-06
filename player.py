@@ -4,9 +4,10 @@ from settings import *
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos,groups,collisionSprites,visibleSprites):
         super().__init__(groups)
-        self.image = pygame.Surface((TILE_SIZE // 2, TILE_SIZE))
-        self.image.fill(PLAYER_COLOR)
-        self.rect = self.image.get_rect(topleft = pos)
+        self.image = pygame.image.load("art/player.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (self.image.get_width()*4,self.image.get_height()*4))
+        self.imgRect = self.image.get_rect(topleft = pos)
+        self.rect = pygame.Rect.copy(self.imgRect).inflate(-5,-20)
         
         self.direction = pygame.math.Vector2()
         self.speed = 7

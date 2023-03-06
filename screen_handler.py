@@ -57,32 +57,4 @@ class ScreenHandler: #this handles displaying every screen other than the level
                 onClick=lambda: pygame.event.post(pygame.event.Event(CHANGE_STATE,state="title"))
             )
             
-        elif screen == "levelselect":
-            SCREEN.blit(BG,(0,0))
-            SCREEN.blit(LEVEL_SELECT_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-300))    
-            
-            self.titleScreenButton = Button(     
-                win=SCREEN,
-                x=SCREEN_WIDTH/2-100,
-                y=SCREEN_HEIGHT/2+100,
-                width=200,
-                height=100,
-                margin=0,
-                radius=20,
-                image=GO_TO_TITLE_BUTTON_IMAGE,
-                onClick=lambda: pygame.event.post(pygame.event.Event(CHANGE_STATE,state="title"))
-            )
-
-            self.levelSelectButtons = ButtonArray(
-                SCREEN,
-                SCREEN_WIDTH/2,
-                SCREEN_HEIGHT/2-200,
-                400,
-                200,
-                (3,2),
-                colour="white",
-                texts=("1","2","3","4","5","6"),
-                onClicks=(lambda: print('1'), lambda: print('2'), lambda: print('3'), lambda: print('4'), lambda: print('5'), lambda: print('6'))
-            )
-            
 

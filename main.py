@@ -13,6 +13,8 @@ from debug import debug
 
 #player camera wont reset from being pushed down after falling through a level
 
+#make player hitbox smaller than sprite to fix floating above tiles
+
 #TODO----------------
 #
 
@@ -68,8 +70,6 @@ class StateController:
             self.go_to_game_over()
         if state == "gamewon":
             self.go_to_game_won()
-        if state == "levelselect":
-            self.go_to_level_select()
         
     def go_to_game_over(self):
         level.level_clear()
@@ -85,11 +85,6 @@ class StateController:
         level.level_clear()
         screenHandler.setup_screen("title")
         self.game_state = "title"
-        
-    def go_to_level_select(self):
-        level.level_clear()
-        screenHandler.setup_screen("levelselect")
-        self.game_state = "levelselect"
     
     def go_to_next_level(self):
         nextLevel = level.return_next_level()
