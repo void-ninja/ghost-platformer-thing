@@ -39,7 +39,7 @@ SCREEN = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
 #     "                                                        ",
 # ]]
 #---------------------------------------
-LEVEL_MAPS = [load_pygame("art/tmx/level1.tmx")] #new levels go in here
+LEVEL_MAPS = [load_pygame("art/tmx/level1.tmx"),load_pygame("art/tmx/level2.tmx"),load_pygame("art/tmx/level3.tmx")] #new levels go in here
 
 MAX_LEVEL_NUM = len(LEVEL_MAPS)
 
@@ -57,6 +57,7 @@ FLAG_COLOR = "yellow"
 FLAG_HIT = pygame.event.custom_type()
 FELL_DOWN = pygame.event.custom_type()
 CHANGE_STATE = pygame.event.custom_type()
+SAVE_POS = pygame.event.custom_type()
 
 TITLE_IMAGE = pygame.transform.scale2x(pygame.image.load("art/title_placeholder.png").convert_alpha())
 GAME_OVER_IMAGE = pygame.transform.scale2x(pygame.image.load("art/game_over_placeholder.png").convert_alpha())

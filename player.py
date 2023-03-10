@@ -6,8 +6,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load("art/player.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (self.image.get_width()*4,self.image.get_height()*4))
-        self.imgRect = self.image.get_rect(topleft = pos)
-        self.rect = pygame.Rect.copy(self.imgRect).inflate(-5,-20)
+        self.rect = self.image.get_rect(topleft = pos).inflate(-5,-20)
         
         self.direction = pygame.math.Vector2()
         self.speed = 7
@@ -17,6 +16,8 @@ class Player(pygame.sprite.Sprite):
         self.visibleSprites = visibleSprites
         self.onFloor = False
         
+        self.prevMoves = [] #list storing the moves from last level
+        self.currentMoves = [] #list storing moves that are being made
         
     def input(self):
         keys = pygame.key.get_pressed()
@@ -65,6 +66,13 @@ class Player(pygame.sprite.Sprite):
     def apply_gravity(self):
         self.direction.y += self.gravity
         self.rect.centery += self.direction.y
+        
+    def save_pos(self):
+        self.currentMoves.append((self.rect.centerx,self.rect.centery))
+    
+    def save_current_moves(self):
+        self.prevMoves = self.currentMoves.copy()
+        self.currentMoves.clear()
             
     def update(self):
         self.input()

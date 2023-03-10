@@ -5,15 +5,7 @@ from settings import *
 from level import Level
 from screen_handler import ScreenHandler
 
-from debug import debug
-
-#? widgets arent clearing  maybe
-#^ level select buttons dont clear
-#! fix the screen images not showing e.g. on gameover screen
-
-#player camera wont reset from being pushed down after falling through a level
-
-#make player hitbox smaller than sprite to fix floating above tiles
+from debug import debug 
 
 #TODO----------------
 #
@@ -41,12 +33,17 @@ class StateController:
             if event.type == FLAG_HIT:
                 pygame.time.wait(500)
                 self.go_to_next_level()
+                return
             if event.type == FELL_DOWN:
                 self.go_to_game_over()
+                return
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE: #TODO this should pause
                     self.go_to_title_screen() 
-                
+                    return
+            if event.type == SAVE_POS:
+                if pygame.key.get_pressed()[pygame.K_a] or pygame.key.get_pressed()[pygame.K_d] or pygame.key.get_pressed()[pygame.K_SPACE]:
+                    level.player_save_pos()
     
         SCREEN.blit(BG,(0,0))
         level.run()  #updates and draws stuff
@@ -60,8 +57,6 @@ class StateController:
             self.screen_loop()
             
     def change_state(self, state):
-        
-        
         if state == "startgame":
             self.start_game()
         if state == "title":
@@ -73,26 +68,30 @@ class StateController:
         
     def go_to_game_over(self):
         level.level_clear()
+        pygame.time.set_timer(SAVE_POS, 0)
         screenHandler.setup_screen("gameover")
         self.game_state = "gameover"
     
     def go_to_game_won(self):
         level.level_clear()
+        pygame.time.set_timer(SAVE_POS, 0)
         screenHandler.setup_screen("gamewon")
         self.game_state = "gamewon"
     
     def go_to_title_screen(self):
         level.level_clear()
+        pygame.time.set_timer(SAVE_POS, 0)
         screenHandler.setup_screen("title")
         self.game_state = "title"
     
     def go_to_next_level(self):
         nextLevel = level.return_next_level()
-        if nextLevel > MAX_LEVEL_NUM: self.go_to_game_won() #checks to make sure that you arent trying to go to a level that dosent exist
+        if nextLevel > MAX_LEVEL_NUM: self.go_to_game_won() # checks to make sure that you arent trying to go to a level that dosent exist
         else: level.level_reset_and_load_next(nextLevel)
     
     def start_game(self):
-        level.level_reset_and_load_first()#this sets the currently active level to the first one
+        level.level_reset_and_load_first() # this sets the currently active level to the first one
+        pygame.time.set_timer(SAVE_POS, 16) # save position in ms
         self.game_state = "level"
 
 pygame.init()

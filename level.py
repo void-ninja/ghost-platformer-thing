@@ -1,5 +1,4 @@
 import pygame
-from pytmx.util_pygame import load_pygame
 
 from settings import *
 from tile import Tile
@@ -30,29 +29,16 @@ class Level:
         
     def level_reset_and_load_next(self,levelNum):
         self.level_clear()
-        self.level_setup(levelNum)
+        self.player.save_current_moves()
+        self.level_setup(levelNum,False)
     
     def level_reset_and_load_first(self):
         self.level_clear()
         self.currentLevel = 1
         
-        self.level_setup(self.currentLevel)
+        self.level_setup(self.currentLevel,True)
     
-    # def levelSetup(self, levelNum):
-    #     levelMap = LEVEL_MAPS[levelNum-1]
-        
-    #     for rowIndex,row in enumerate(levelMap):
-    #         for colIndex,col in enumerate(row):
-    #             x = colIndex * TILE_SIZE
-    #             y = rowIndex * TILE_SIZE
-    #             if col == "X":
-    #                 Tile((x,y),[self.visibleSprites,self.collisionSprites])
-    #             if col == "P":
-    #                 self.player = Player((x,y),[self.visibleSprites,self.activeSprites],self.collisionSprites,self.visibleSprites,levelMap)
-    #             if col == "F":
-    #                 Flag((x,y),[self.visibleSprites])
-    
-    def level_setup(self,levelNum):
+    def level_setup(self,levelNum,first):
         levelMap = LEVEL_MAPS[levelNum-1]
         
         for layer in levelMap.visible_layers:
@@ -64,14 +50,25 @@ class Level:
         for obj in levelMap.objects:
             pos = (obj.x*4,obj.y*4) # x4 needed bc of scaling the tiles from 16 px to 64px
             if obj.name == "Player":
-                self.player= Player(pos,[self.visibleSprites,self.activeSprites],self.collisionSprites,self.visibleSprites)
-                Ghost(pos,[self.visibleSprites,self.activeSprites])
+                if first:    
+                    self.player = Player(pos,[self.visibleSprites,self.activeSprites],self.collisionSprites,self.visibleSprites)
+                else:
+                    self.player.rect.topleft = pos
+                    self.visibleSprites.add(self.player)
+                    self.activeSprites.add(self.player)
+                    self.ghost = Ghost(pos,[self.visibleSprites,self.activeSprites],self.player.prevMoves)
             elif obj.name == "Flag":
                 Flag(pos,obj.image,[self.visibleSprites])
+                
+        self.visibleSprites.reset_camera(self.player)
+        
+    def player_save_pos(self):
+        self.player.save_pos()
              
     def run(self):
         self.activeSprites.update()
         self.visibleSprites.custom_draw(self.player)
+        
         
 class CameraGroup(pygame.sprite.Group):
         def __init__(self):
@@ -103,3 +100,6 @@ class CameraGroup(pygame.sprite.Group):
             for sprite in self.sprites():
                 offsetPos = sprite.rect.topleft - self.offset
                 self.displaySurface.blit(sprite.image,offsetPos)
+                
+        def reset_camera(self,player):
+            self.cameraRect.center = (player.rect.centerx + 100, player.rect.centery - 200)
