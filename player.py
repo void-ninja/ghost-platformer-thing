@@ -3,10 +3,21 @@ from settings import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos,groups,collisionSprites,visibleSprites):
-        super().__init__(groups)
-        self.image = pygame.image.load("art/player.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (self.image.get_width()*4,self.image.get_height()*4))
-        self.rect = self.image.get_rect(topleft = pos).inflate(-5,-20)
+        super().__init__(groups)        
+        self.runFrames = []
+        
+        for i in range(1,9):
+            image = pygame.image.load(f"./art/animations/player_animated_run{i}.png").convert_alpha()
+            image = pygame.transform.scale_by(image, 4)
+            self.runFrames.append(image)
+        
+        self.image = self.runFrames[0]
+        self.rect = self.image.get_rect(topleft=pos) # used for drawing
+        
+        self.hitbox = self.rect.copy() # used for collision and moving
+        self.hitbox.inflate_ip(-80,-40)
+        
+        self.runAnimation = False
         
         self.direction = pygame.math.Vector2()
         self.speed = 7
@@ -16,6 +27,8 @@ class Player(pygame.sprite.Sprite):
         self.visibleSprites = visibleSprites
         self.onFloor = False
         
+        self.currentRunFrame = 0
+        
         self.prevMoves = [] #list storing the moves from last level
         self.currentMoves = [] #list storing moves that are being made
         
@@ -24,40 +37,43 @@ class Player(pygame.sprite.Sprite):
         
         if keys[pygame.K_d]: #right
             self.direction.x = 1
+            self.animate_run("right")
         elif keys[pygame.K_a]: #left
             self.direction.x = -1
+            self.animate_run("left")
         else:
             self.direction.x = 0
+            self.runAnimation = False
             
         if keys[pygame.K_SPACE] and self.onFloor: #jump
             self.direction.y = -self.jumpHeight
             
     def check_collisions(self):
-        if self.rect.y > LEVEL_HEIGHT: #checks if you have fallen past the level
+        if self.hitbox.y > LEVEL_HEIGHT: #checks if you have fallen past the level
             pygame.event.post(pygame.event.Event(FELL_DOWN))
         
         #checks for level end (hit the flag)  
         for sprite in self.visibleSprites.sprites():
-            if sprite.__class__.__name__ == "Flag" and sprite.rect.colliderect(self.rect):
+            if sprite.__class__.__name__ == "Flag" and sprite.rect.colliderect(self.hitbox):
                 pygame.event.post(pygame.event.Event(FLAG_HIT))
                 
         for sprite in self.collisionSprites.sprites():
-            if sprite.rect.colliderect(self.rect):
+            if sprite.rect.colliderect(self.hitbox):
                 if self.direction.x < 0:
-                    self.rect.left = sprite.rect.right
+                    self.hitbox.left = sprite.rect.right
                 if self.direction.x > 0:
-                    self.rect.right = sprite.rect.left
+                    self.hitbox.right = sprite.rect.left
                     
         self.apply_gravity() #important that it happens before vertical collisions
         
         for sprite in self.collisionSprites.sprites():
-            if sprite.rect.colliderect(self.rect):
+            if sprite.rect.colliderect(self.hitbox):
                 if self.direction.y > 0:
-                    self.rect.bottom = sprite.rect.top
+                    self.hitbox.bottom = sprite.rect.top
                     self.direction.y = 0
                     self.onFloor = True
                 if self.direction.y < 0:
-                    self.rect.top = sprite.rect.bottom
+                    self.hitbox.top = sprite.rect.bottom
                     self.direction.y = 0
 
         if self.onFloor and self.direction.y != 0: #prevents double jumps
@@ -65,17 +81,36 @@ class Player(pygame.sprite.Sprite):
             
     def apply_gravity(self):
         self.direction.y += self.gravity
-        self.rect.centery += self.direction.y
+        self.hitbox.centery += self.direction.y
         
     def save_pos(self):
-        self.currentMoves.append((self.rect.centerx,self.rect.centery))
+        self.currentMoves.append([(self.rect.centerx,self.rect.centery),self.currentRunFrame])
     
     def save_current_moves(self):
         self.prevMoves = self.currentMoves.copy()
         self.currentMoves.clear()
+        
+    def animate_run(self,direction):
+        self.runAnimation = direction # can be either "right" or "left"
             
     def update(self):
         self.input()
-        self.rect.centerx += self.direction.x * self.speed
+        self.hitbox.centerx += self.direction.x * self.speed
         self.check_collisions()
+        self.rect.center = self.hitbox.center
+        
+        if self.runAnimation == "right":
+            self.currentRunFrame += 0.3
+        elif self.runAnimation == "left":
+            self.currentRunFrame -= 0.3
+        else:
+            self.currentRunFrame = 0
+        
+        if self.currentRunFrame >= len(self.runFrames):
+            self.currentRunFrame = 0
+            
+        if self.currentRunFrame <= -len(self.runFrames):
+            self.currentRunFrame = 0
+        
+        self.image = self.runFrames[int(self.currentRunFrame)]
         

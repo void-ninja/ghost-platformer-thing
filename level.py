@@ -53,7 +53,7 @@ class Level:
                 if first:    
                     self.player = Player(pos,[self.visibleSprites,self.activeSprites],self.collisionSprites,self.visibleSprites)
                 else:
-                    self.player.rect.topleft = pos
+                    self.player.hitbox.topleft = pos
                     self.visibleSprites.add(self.player)
                     self.activeSprites.add(self.player)
                     self.ghost = Ghost(pos,[self.visibleSprites,self.activeSprites],self.player.prevMoves)

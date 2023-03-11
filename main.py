@@ -91,7 +91,7 @@ class StateController:
     
     def start_game(self):
         level.level_reset_and_load_first() # this sets the currently active level to the first one
-        pygame.time.set_timer(SAVE_POS, 16) # save position in ms
+        pygame.time.set_timer(SAVE_POS, 16) # save position in ms (16 = once every frame at 60fps)
         self.game_state = "level"
 
 pygame.init()
