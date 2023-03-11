@@ -5,9 +5,15 @@ from debug import debug
 class Ghost(pygame.sprite.Sprite):
     def __init__(self,pos,groups,path=[]):
         super().__init__(groups)
-        self.image = pygame.image.load("art/ghost.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (self.image.get_width()*4,self.image.get_height()*4))
-        self.image.set_alpha(200)
+        self.runFrames = []
+        
+        for i in range(1,9):
+            image = pygame.image.load(f"./art/animations/ghost_animated_run{i}.png").convert_alpha()
+            image = pygame.transform.scale_by(image, 4)
+            image.set_alpha(220)
+            self.runFrames.append(image)
+        
+        self.image = self.runFrames[0]
         
         self.rect = self.image.get_rect(topleft = pos).inflate(-5,-20)
         
@@ -19,6 +25,10 @@ class Ghost(pygame.sprite.Sprite):
         self.ySpeed = 5
     
     def update(self):  
+        
+        self.image = self.runFrames[int(self.path[self.nodeNum][1])]
+        
+        # pathfinding stuff
         if self.nodeNum >= len(self.path):
             self.nodeNum = 0
             self.rect.center = self.path[0][0]
