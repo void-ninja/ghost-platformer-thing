@@ -50,12 +50,7 @@ class Player(pygame.sprite.Sprite):
             
     def check_collisions(self):
         if self.hitbox.y > LEVEL_HEIGHT: #checks if you have fallen past the level
-            pygame.event.post(pygame.event.Event(FELL_DOWN))
-        
-        #checks for level end (hit the flag)  
-        for sprite in self.visibleSprites.sprites():
-            if sprite.__class__.__name__ == "Flag" and sprite.rect.colliderect(self.hitbox):
-                pygame.event.post(pygame.event.Event(FLAG_HIT))
+            pygame.event.post(pygame.event.Event(GAME_OVER))
                 
         for sprite in self.collisionSprites.sprites():
             if sprite.rect.colliderect(self.hitbox):
@@ -84,9 +79,14 @@ class Player(pygame.sprite.Sprite):
         self.hitbox.centery += self.direction.y
         
     def save_pos(self):
-        self.currentMoves.append([(self.rect.centerx,self.rect.centery),self.currentRunFrame])
+        self.currentMoves.append([(self.rect.centerx,self.rect.centery),self.currentRunFrame,True]) # each nested list needs to have this: (x,y), currentAnimationFrame, killsPlayer
     
-    def save_current_moves(self):
+    def save_current_moves(self):   
+        startX = self.currentMoves[0][0][0] # should be where the player starts from
+        startY = self.currentMoves[0][0][1]
+        for i in range(1,WAIT_FRAMES+1): # effectively makes the ghost come in from 4 seconds worth of frames away #! This will make it so the repeat takes a while to happen
+            self.currentMoves.insert(0,[(startX, startY),0,False])
+            
         self.prevMoves = self.currentMoves.copy()
         self.currentMoves.clear()
         

@@ -16,6 +16,8 @@ class Ghost(pygame.sprite.Sprite):
         self.image = self.runFrames[0]
         
         self.rect = self.image.get_rect(topleft = pos).inflate(-5,-20)
+        self.hitbox = self.rect.copy() # used for collision
+        self.hitbox.inflate_ip(-50,-10)
         
         self.path = path
         self.nodeNum = 0
@@ -23,15 +25,20 @@ class Ghost(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.xSpeed = 5
         self.ySpeed = 5
+        
+        self.killsPlayer = False
     
-    def update(self):  
-        
-        self.image = self.runFrames[int(self.path[self.nodeNum][1])]
-        
+    def update(self):          
         # pathfinding stuff
-        if self.nodeNum >= len(self.path):
+        if self.nodeNum >= len(self.path): # this evaluates to true if the ghost has reached the end of the players path
+            for i in range(1,WAIT_FRAMES + 1): # this makes it so that the ghost doesn't wait around before starting each repetition of the path after completing the first one. This is done by removing the frames that cause it to wait
+                self.path.pop(self.path[0])
             self.nodeNum = 0
             self.rect.center = self.path[0][0]
+            
+        self.image = self.runFrames[int(self.path[self.nodeNum][1])] # animation
+        
+        self.killsPlayer = self.path[self.nodeNum][2]
         
         dest = self.path[self.nodeNum]
         xDest = dest[0][0]
@@ -40,4 +47,6 @@ class Ghost(pygame.sprite.Sprite):
         self.nodeNum += 1
         self.rect.centerx = xDest # this stuff works bc I'm capturing the players position every frame
         self.rect.centery = yDest
+        
+        self.hitbox.center = self.rect.center
             

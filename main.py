@@ -8,7 +8,7 @@ from screen_handler import ScreenHandler
 from debug import debug 
 
 #TODO----------------
-#
+# add tutorial
 
 class StateController:
     def __init__(self):
@@ -34,11 +34,11 @@ class StateController:
                 pygame.time.wait(500)
                 self.go_to_next_level()
                 return
-            if event.type == FELL_DOWN:
+            if event.type == GAME_OVER:
                 self.go_to_game_over()
                 return
             if event.type == pygame.KEYUP:
-                if event.key == pygame.K_ESCAPE: #TODO this should pause
+                if event.key == pygame.K_ESCAPE: #TODO this should pause ?
                     self.go_to_title_screen() 
                     return
             if event.type == SAVE_POS:

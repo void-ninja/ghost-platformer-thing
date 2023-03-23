@@ -56,7 +56,7 @@ class Level:
                     self.player.hitbox.topleft = pos
                     self.visibleSprites.add(self.player)
                     self.activeSprites.add(self.player)
-                    self.ghost = Ghost(pos,[self.visibleSprites,self.activeSprites],self.player.prevMoves)
+                    self.ghost = Ghost((pos[0] - 400,pos[1]),[self.visibleSprites,self.activeSprites],self.player.prevMoves)
             elif obj.name == "Flag":
                 Flag(pos,obj.image,[self.visibleSprites])
                 
@@ -64,8 +64,17 @@ class Level:
         
     def player_save_pos(self):
         self.player.save_pos()
+        
+    def check_player_collisions(self):
+        #checks for level end (hit the flag) and hitting the ghost
+        for sprite in self.visibleSprites.sprites():
+            if sprite.__class__.__name__ == "Flag" and sprite.rect.colliderect(self.player.hitbox):
+                pygame.event.post(pygame.event.Event(FLAG_HIT))
+            if sprite.__class__.__name__ == "Ghost" and sprite.hitbox.colliderect(self.player.hitbox) and self.ghost.killsPlayer == True:
+                pygame.event.post(pygame.event.Event(GAME_OVER))
              
     def run(self):
+        self.check_player_collisions()
         self.activeSprites.update()
         self.visibleSprites.custom_draw(self.player)
         

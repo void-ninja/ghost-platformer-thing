@@ -54,8 +54,10 @@ GHOST_COLOR = "red"
 TILE_COLOR = "blue"
 FLAG_COLOR = "yellow"
 
+WAIT_FRAMES = 60 * 2 # replace the second number with how many frames you want the ghost to wait before starting to move and kill the player
+
 FLAG_HIT = pygame.event.custom_type()
-FELL_DOWN = pygame.event.custom_type()
+GAME_OVER = pygame.event.custom_type()
 CHANGE_STATE = pygame.event.custom_type()
 SAVE_POS = pygame.event.custom_type()
 
