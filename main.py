@@ -12,7 +12,7 @@ from debug import debug
 
 class StateController:
     def __init__(self):
-        pass
+        self.tutorial_page = 1
     
     def screen_loop(self):
         for event in pygame.event.get():
@@ -47,12 +47,33 @@ class StateController:
     
         SCREEN.blit(BG,(0,0))
         level.run()  #updates and draws stuff
-        debug(round(clock.get_fps()))
         pygame.display.update()
+    
+    def tutorial(self):
+        
+        if self.tutorial_page > 2:
+            self.change_state("title")
+            self.tutorial_page = 1
+        elif self.tutorial_page == 1:
+            SCREEN.blit(TUTORIAL_IMAGE_1,(0,0))
+            pygame.display.update()
+        elif self.tutorial_page == 2:
+            SCREEN.blit(TUTORIAL_IMAGE_2,(0,0))
+            pygame.display.update()
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    self.tutorial_page += 1
         
     def state_manager(self):
         if self.game_state == "level":
             self.level()
+        elif self.game_state == "tutorial":
+            self.tutorial()
         else:
             self.screen_loop()
             
@@ -65,6 +86,8 @@ class StateController:
             self.go_to_game_over()
         if state == "gamewon":
             self.go_to_game_won()
+        if state == "tutorial":
+            self.game_state = "tutorial"
         
     def go_to_game_over(self):
         level.level_clear()
@@ -100,7 +123,7 @@ level = Level()
 gameState = StateController()
 screenHandler = ScreenHandler()
 
-gameState.go_to_title_screen()
+gameState.game_state = "tutorial"
 
 while True:
     gameState.state_manager()

@@ -25,6 +25,18 @@ class ScreenHandler: #this handles displaying every screen other than the level
                 onClick=lambda: pygame.event.post(pygame.event.Event(CHANGE_STATE,state="startgame"))
             )
             
+            self.tutorialButton = Button(
+                win=SCREEN,
+                x=SCREEN_WIDTH/2-100,
+                y=SCREEN_HEIGHT/2+230,
+                width=200,
+                height=100,
+                margin=0, 
+                radius=20,
+                image=TUTORIAL_BUTTON_IMAGE,
+                onClick=lambda: pygame.event.post(pygame.event.Event(CHANGE_STATE,state="tutorial"))
+            )
+            
         elif screen == "gameover":
             SCREEN.blit(BG,(0,0))
             SCREEN.blit(GAME_OVER_IMAGE,(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2-100))    

@@ -27,12 +27,16 @@ class Ghost(pygame.sprite.Sprite):
         self.ySpeed = 5
         
         self.killsPlayer = False
+        self.has_repeated = False
     
     def update(self):          
         # pathfinding stuff
+        
         if self.nodeNum >= len(self.path): # this evaluates to true if the ghost has reached the end of the players path
-            for i in range(1,WAIT_FRAMES + 1): # this makes it so that the ghost doesn't wait around before starting each repetition of the path after completing the first one. This is done by removing the frames that cause it to wait
-                self.path.pop(self.path[0])
+            if self.has_repeated == False:
+                for i in range(1,WAIT_FRAMES + 1): # this makes it so that the ghost doesn't wait around before starting each repetition of the path after completing the first one. This is done by removing the frames that cause it to wait
+                    self.path.pop(0)
+                self.has_repeated = True
             self.nodeNum = 0
             self.rect.center = self.path[0][0]
             

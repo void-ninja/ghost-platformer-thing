@@ -39,7 +39,13 @@ SCREEN = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT),vsync=1)
 #     "                                                        ",
 # ]]
 #---------------------------------------
-LEVEL_MAPS = [load_pygame("art/tmx/level1.tmx"),load_pygame("art/tmx/level2.tmx"),load_pygame("art/tmx/level3.tmx")] #new levels go in here
+LEVEL_MAPS = [
+    load_pygame("art/tmx/level1.tmx"),
+    load_pygame("art/tmx/level2.tmx"),
+    load_pygame("art/tmx/level3.tmx"),
+    load_pygame("art/tmx/level4.tmx"),
+    load_pygame("art/tmx/level5.tmx")
+] #new levels go in here
 
 MAX_LEVEL_NUM = len(LEVEL_MAPS)
 
@@ -66,8 +72,12 @@ GAME_OVER_IMAGE = pygame.transform.scale2x(pygame.image.load("art/game_over_plac
 GAME_WON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/game_won_placeholder.png").convert_alpha())
 LEVEL_SELECT_IMAGE = pygame.transform.scale2x(pygame.image.load("art/level_select_placeholder.png").convert_alpha())
 
+TUTORIAL_IMAGE_1 = pygame.image.load("art/tutorial_screen_1.png").convert_alpha()
+TUTORIAL_IMAGE_2 = pygame.image.load("art/tutorial_screen_2.png").convert_alpha()
+
 TITLE_SCREEN_START_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/start_button_placeholder.png").convert_alpha())
 GO_TO_TITLE_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/main_menu_button_placeholder.png").convert_alpha())
+TUTORIAL_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/tutorial_button_placeholder.png").convert_alpha())
 
 FPS = 60
 
