@@ -117,14 +117,23 @@ class StateController:
         pygame.time.set_timer(SAVE_POS, 16) # save position in ms (16 = once every frame at 60fps)
         self.game_state = "level"
 
-pygame.init()
-clock = pygame.time.Clock()
-level = Level()
-gameState = StateController()
-screenHandler = ScreenHandler()
+if __name__ == "__main__":
+    pygame.init()
+    clock = pygame.time.Clock()
+    level = Level()
+    
+    pygame.mixer.music.load(MUSIC_START)
+    pygame.mixer.music.play()
+    
+    gameState = StateController()
+    screenHandler = ScreenHandler()
 
-gameState.game_state = "tutorial"
+    gameState.game_state = "tutorial"
 
-while True:
-    gameState.state_manager()
-    clock.tick(FPS)
+    while True:
+        if pygame.mixer.music.get_busy() == False:
+            pygame.mixer.music.load(MUSIC_LOOP)
+            pygame.mixer.music.play()
+        
+        gameState.state_manager()
+        clock.tick(FPS)

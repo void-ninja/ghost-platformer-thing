@@ -79,6 +79,9 @@ TITLE_SCREEN_START_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("ar
 GO_TO_TITLE_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/main_menu_button_placeholder.png").convert_alpha())
 TUTORIAL_BUTTON_IMAGE = pygame.transform.scale2x(pygame.image.load("art/tutorial_button_placeholder.png").convert_alpha())
 
+MUSIC_START = "music/Cades-song-1.mp3"
+MUSIC_LOOP = "music/Cades-song-1-loop.mp3"
+
 FPS = 60
 
 CAMERA_BORDERS = {
